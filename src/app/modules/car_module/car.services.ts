@@ -56,8 +56,30 @@ const getCarByIdFromDB = async (carId: string) => {
     }
   }
 };
+
+const updateCarFromDB = async (carId: string, updateData: object) => {
+  try {
+    const result = await Car.findByIdAndUpdate(carId, updateData, {
+      new: true,
+    });
+    return {
+      message: 'Car updated successfully',
+      success: true,
+      data: result,
+    };
+
+  } catch (error) {
+    if (error instanceof mongoose.Error.ValidationError) {
+      return genericError(error);
+    } else {
+      return error;
+    }
+  }
+};
+
 export const carServices = {
   createCarInDB,
   getAllCarsFromDB,
   getCarByIdFromDB,
+  updateCarFromDB,
 };

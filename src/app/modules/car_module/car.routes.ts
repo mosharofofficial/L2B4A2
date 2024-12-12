@@ -6,7 +6,8 @@ const carRoutes = express.Router();
 
 const {createCar,
      getAllCars,
-     getCarById
+     getCarById,
+     updateCar
     } = carHandlers;
 
 
@@ -14,6 +15,7 @@ const {createCar,
 carRoutes.post('/', createCar);
 carRoutes.get('/', getAllCars);
 carRoutes.get('/:carId', getCarById);
+carRoutes.put('/:carId', updateCar);
 
 
 

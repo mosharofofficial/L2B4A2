@@ -73,8 +73,29 @@ const getCarByIdFromDB = (carId) => __awaiter(void 0, void 0, void 0, function* 
         }
     }
 });
+const updateCarFromDB = (carId, updateData) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const result = yield car_model_1.Car.findByIdAndUpdate(carId, updateData, {
+            new: true,
+        });
+        return {
+            message: 'Car updated successfully',
+            success: true,
+            data: result,
+        };
+    }
+    catch (error) {
+        if (error instanceof mongoose_1.default.Error.ValidationError) {
+            return (0, car_utility_1.default)(error);
+        }
+        else {
+            return error;
+        }
+    }
+});
 exports.carServices = {
     createCarInDB,
     getAllCarsFromDB,
     getCarByIdFromDB,
+    updateCarFromDB,
 };
