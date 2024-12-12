@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import { carServices } from './car.services';
 
-const { createCarInDB } = carServices;
+const { createCarInDB, getAllCarsFromDB } = carServices;
 
 const createCar = async (req: Request, res: Response) => {
   try {
@@ -14,11 +14,16 @@ const createCar = async (req: Request, res: Response) => {
   }
 };
 
-// const getAllCars = async (req: Request, res: Response) => {
-//   res.json({ message: 'get all cars route hit' });
-// };
+const getAllCars = async (req: Request, res: Response) => {
+  try {
+    const result = await getAllCarsFromDB();
+    res.json(result);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const carHandlers = {
   createCar,
-  // getAllCars
+  getAllCars,
 };

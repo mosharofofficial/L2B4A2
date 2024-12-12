@@ -15,10 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.carServices = void 0;
 const car_model_1 = require("./car_model");
 const mongoose_1 = __importDefault(require("mongoose"));
+const car_utility_1 = __importDefault(require("./car.utility"));
 const createCarInDB = (car) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield car_model_1.Car.create(car);
-        console.log('services response: ', result);
         if (result._id) {
             return {
                 message: 'Car created successfully',
@@ -32,21 +32,29 @@ const createCarInDB = (car) => __awaiter(void 0, void 0, void 0, function* () {
             // const errors = JSON.stringify(error.errors, (key, value) => {
             //   return value;
             // });
-            const errorDetails = {
-                message: error.message,
-                success: false,
-                error: {
-                    name: error.name,
-                    errors: error.errors,
-                },
-                stack: error.stack,
-            };
+            const errorDetails = (0, car_utility_1.default)(error);
             return errorDetails;
+        }
+        else {
+            return error;
         }
     }
 });
-// const getAllCarsFromDB = async () => {};
+const getAllCarsFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const result = yield car_model_1.Car.find();
+        return result;
+    }
+    catch (error) {
+        if (error instanceof mongoose_1.default.Error.ValidationError) {
+            return (0, car_utility_1.default)(error);
+        }
+        else {
+            return error;
+        }
+    }
+});
 exports.carServices = {
     createCarInDB,
-    // getAllCarsFromDB
+    getAllCarsFromDB,
 };

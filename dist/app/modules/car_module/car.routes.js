@@ -6,9 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const car_controllers_1 = require("./car.controllers");
 const carRoutes = express_1.default.Router();
-const { createCar,
-//  getAllCars
- } = car_controllers_1.carHandlers;
+const { createCar, getAllCars } = car_controllers_1.carHandlers;
 carRoutes.post('/', createCar);
-// carRoutes.get('/', getAllCars);
+carRoutes.get('/', getAllCars);
 exports.default = carRoutes;

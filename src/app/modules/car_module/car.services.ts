@@ -1,11 +1,11 @@
 import { Car } from './car_model';
 import { CarInterface } from './car.interfaces';
-import mongoose, { Error } from 'mongoose';
+import mongoose from 'mongoose';
+import genericError from './car.utility';
 
 const createCarInDB = async (car: CarInterface) => {
   try {
     const result = await Car.create(car);
-    console.log('services response: ', result);
     if (result._id) {
       return {
         message: 'Car created successfully',
@@ -19,23 +19,28 @@ const createCarInDB = async (car: CarInterface) => {
       //   return value;
       // });
 
-      const errorDetails = {
-        message: error.message,
-        success: false,
-        error: {
-          name: error.name,
-          errors: error.errors,
-        },
-        stack: error.stack,
-      };
+      const errorDetails = genericError(error);
       return errorDetails;
+    } else {
+      return error;
     }
   }
 };
 
-// const getAllCarsFromDB = async () => {};
+const getAllCarsFromDB = async () => {
+  try {
+    const result = await Car.find();
+    return result;
+  } catch (error) {
+    if (error instanceof mongoose.Error.ValidationError) {
+      return genericError(error);
+    } else {
+      return error;
+    }
+  }
+};
 
 export const carServices = {
   createCarInDB,
-  // getAllCarsFromDB
+  getAllCarsFromDB,
 };
