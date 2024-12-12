@@ -67,7 +67,23 @@ const updateCarFromDB = async (carId: string, updateData: object) => {
       success: true,
       data: result,
     };
+  } catch (error) {
+    if (error instanceof mongoose.Error.ValidationError) {
+      return genericError(error);
+    } else {
+      return error;
+    }
+  }
+};
 
+const deleteCarFromDB = async (carId: string) => {
+  try {
+    const result = await Car.findByIdAndDelete(carId);
+    return {
+      message: 'Car deleted successfully',
+      status: true,
+      data: result,
+    };
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {
       return genericError(error);
@@ -82,4 +98,5 @@ export const carServices = {
   getAllCarsFromDB,
   getCarByIdFromDB,
   updateCarFromDB,
+  deleteCarFromDB,
 };
