@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.carHandlers = void 0;
 const car_services_1 = require("./car.services");
-const { createCarInDB, getAllCarsFromDB } = car_services_1.carServices;
+const { createCarInDB, getAllCarsFromDB, getCarByIdFromDB } = car_services_1.carServices;
 const createCar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield createCarInDB(req.body);
@@ -31,7 +31,17 @@ const getAllCars = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         console.log(error);
     }
 });
+const getCarById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const result = yield getCarByIdFromDB(req.params.carId);
+        res.json(result);
+    }
+    catch (error) {
+        console.log(error);
+    }
+});
 exports.carHandlers = {
     createCar,
     getAllCars,
+    getCarById,
 };

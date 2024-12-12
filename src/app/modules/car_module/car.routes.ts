@@ -5,13 +5,15 @@ import { carHandlers } from './car.controllers';
 const carRoutes = express.Router();
 
 const {createCar,
-     getAllCars
+     getAllCars,
+     getCarById
     } = carHandlers;
 
 
 
 carRoutes.post('/', createCar);
 carRoutes.get('/', getAllCars);
+carRoutes.get('/:carId', getCarById);
 
 
 

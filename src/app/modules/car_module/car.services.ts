@@ -15,10 +15,6 @@ const createCarInDB = async (car: CarInterface) => {
     }
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {
-      // const errors = JSON.stringify(error.errors, (key, value) => {
-      //   return value;
-      // });
-
       const errorDetails = genericError(error);
       return errorDetails;
     } else {
@@ -30,7 +26,11 @@ const createCarInDB = async (car: CarInterface) => {
 const getAllCarsFromDB = async () => {
   try {
     const result = await Car.find();
-    return result;
+    return {
+      message: 'Cars retrieved successfully',
+      success: true,
+      data: result,
+    };
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {
       return genericError(error);
@@ -40,7 +40,24 @@ const getAllCarsFromDB = async () => {
   }
 };
 
+const getCarByIdFromDB = async (carId: string) => {
+  try {
+    const result = await Car.findById(carId);
+    return {
+      message: 'Car retrieved successfully',
+      success: true,
+      data: result,
+    };
+  } catch (error) {
+    if (error instanceof mongoose.Error.ValidationError) {
+      return genericError(error);
+    } else {
+      return error;
+    }
+  }
+};
 export const carServices = {
   createCarInDB,
   getAllCarsFromDB,
+  getCarByIdFromDB,
 };

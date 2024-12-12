@@ -29,9 +29,6 @@ const createCarInDB = (car) => __awaiter(void 0, void 0, void 0, function* () {
     }
     catch (error) {
         if (error instanceof mongoose_1.default.Error.ValidationError) {
-            // const errors = JSON.stringify(error.errors, (key, value) => {
-            //   return value;
-            // });
             const errorDetails = (0, car_utility_1.default)(error);
             return errorDetails;
         }
@@ -43,7 +40,29 @@ const createCarInDB = (car) => __awaiter(void 0, void 0, void 0, function* () {
 const getAllCarsFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield car_model_1.Car.find();
-        return result;
+        return {
+            message: 'Cars retrieved successfully',
+            success: true,
+            data: result,
+        };
+    }
+    catch (error) {
+        if (error instanceof mongoose_1.default.Error.ValidationError) {
+            return (0, car_utility_1.default)(error);
+        }
+        else {
+            return error;
+        }
+    }
+});
+const getCarByIdFromDB = (carId) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const result = yield car_model_1.Car.findById(carId);
+        return {
+            message: 'Car retrieved successfully',
+            success: true,
+            data: result,
+        };
     }
     catch (error) {
         if (error instanceof mongoose_1.default.Error.ValidationError) {
@@ -57,4 +76,5 @@ const getAllCarsFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
 exports.carServices = {
     createCarInDB,
     getAllCarsFromDB,
+    getCarByIdFromDB,
 };
